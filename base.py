@@ -24,9 +24,6 @@ class BaseHandler(webapp.RequestHandler):
 
         self._context = {'c':dict()}
 
-    def get(self,*args):
-        pass
-
     def context(self,key,val):
         self._context['c'][key] = val
 
@@ -34,3 +31,25 @@ class BaseHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__),view)
         logging.debug(self.context)
         self.response.out.write(template.render(path,self._context))
+
+    def get(self,*args):
+        pass
+
+    def put(self,*args):
+        pass
+
+    def post(self,*args):
+        pass
+
+    def head(self,*args):
+        pass
+
+    def options(self,*args):
+        pass
+
+    def delete(self,*args):
+        pass
+
+    def trace(self,*args):
+        pass
+

@@ -6,9 +6,11 @@ var MailinatorMonitorNamespace = {
     common : {
         init : function() {
             $("#go").click( function() {
-                // alert($("#addresses").val());
-                jQuery.getJSON("/mailinator/" + $("#addresses").val(), function(d) {
-                    alert(d);
+                var url = "/mailinator/" + $("#addresses").val()
+                jQuery.getJSON(url, function(emails) {
+                    for( var i = 0; i < emails.length; ++i ) {
+                        $("#results").append(emails[i].subject + "<br/>");
+                    }
                 });
             })
         },
