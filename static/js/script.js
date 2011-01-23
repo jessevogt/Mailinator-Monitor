@@ -5,7 +5,12 @@
 var MailinatorMonitorNamespace = {
     common : {
         init : function() {
-            alert("hello world!");
+            $("#go").click( function() {
+                // alert($("#addresses").val());
+                jQuery.getJSON("/mailinator/" + $("#addresses").val(), function(d) {
+                    alert(d);
+                });
+            })
         },
         finalize : function() {}
     }

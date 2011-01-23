@@ -1,5 +1,4 @@
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import urlfetch
 
 from xml.dom import minidom
@@ -19,10 +18,10 @@ def getText(node):
     return ''.join(rc)
 
 class MailinatorHandler(BaseHandler):
-    def get(self,*ar,**kw):
-        super(MailinatorHandler,self).get()
+    def get(self,*args):
+        super(MailinatorHandler,self).get(args)
         
-        username = cgi.escape(ar[0].strip())
+        username = cgi.escape(args[0].strip())
         
         mail_rss_url = 'http://mailinator.com/rss.jsp?email=' + username
         logging.debug('fetching %s' % mail_rss_url)
@@ -45,15 +44,3 @@ class MailinatorHandler(BaseHandler):
                 emails.append(email)
 
         self.response.out.write(simplejson.dumps(emails))
-
-
-application = webapp.WSGIApplication([('/.+/(.+)',MailinatorHandler)],
-                                     debug=True)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == '__main__':
-    main()
-
-        

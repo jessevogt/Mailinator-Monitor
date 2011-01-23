@@ -8,7 +8,7 @@ import logging
 class AppSettings(db.Model):
     pass
 
-class BaseHandler(webapp.RequestHandler,object):
+class BaseHandler(webapp.RequestHandler):
     def __init__(self):
         super(BaseHandler,self).__init__()
         
@@ -23,6 +23,9 @@ class BaseHandler(webapp.RequestHandler,object):
             self.appsettings = all_settings[0]
 
         self._context = {'c':dict()}
+
+    def get(self,*args):
+        pass
 
     def context(self,key,val):
         self._context['c'][key] = val
