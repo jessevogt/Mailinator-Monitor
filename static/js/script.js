@@ -6,13 +6,38 @@ var MailinatorMonitorNamespace = {
     common : {
         init : function() {
             $("#go").click( function() {
-                var url = "/mailinator/" + $("#addresses").val()
-                jQuery.getJSON(url, function(emails) {
-                    for( var i = 0; i < emails.length; ++i ) {
-                        $("#results").append(emails[i].subject + "<br/>");
+
+                // delete the data div and recreate to remove all previous results
+                $("#results #data").remove();
+                $("#results").append('<div id="data"></div>');
+
+                var rawAddresses = $("#addresses").val().split(/[\s,;]/);
+                var addressesLength = rawAddresses.length;
+                for( var i = 0; i < addressesLength; ++i ) {
+                    var address = null
+                    if( rawAddresses[i].indexOf("@") < 0 ) {
+                        // address does not contain @server.com, just add as is
+                        address = rawAddresses[i];
+                    } else {
+                        // strip of the @ sign and everything after it
+                        address = rawAddresses[i].substr(0,rawAddresses[i].indexOf("@"));
                     }
-                });
-            })
+
+                    $("#results #data").append('<div id="' + address + '"></div>"');
+                    $("#results #data #" + address).append("<h1>" + address + "</h1>");
+
+                    var url = "/mailinator/" + address;
+                    jQuery.getJSON(url, function(accountData) {
+                        var user = accountData.user;
+                        var emailsLength = accountData.emails.length;
+                        for( var j = 0; j < emailsLength; ++j ) {
+                            $("#results #data #" + user).append(accountData.emails[j].subject + "<br/>");
+                        }
+                        console.log("added for " + user);
+                    });
+                }
+                
+            });
         },
         finalize : function() {}
     }

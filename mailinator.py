@@ -31,6 +31,7 @@ class MailinatorHandler(BaseHandler):
         if fetch_response.status_code == 200:
             raw_xml = fetch_response.content
 
+        account_data = {'user':username}
         emails = []
         if raw_xml:
             rss_dom = minidom.parseString(raw_xml)
@@ -43,4 +44,5 @@ class MailinatorHandler(BaseHandler):
                 
                 emails.append(email)
 
-        self.response.out.write(simplejson.dumps(emails))
+        account_data['emails'] = emails
+        self.response.out.write(simplejson.dumps(account_data))
