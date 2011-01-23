@@ -1,0 +1,17 @@
+application: mailinator-monitor
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /
+  script: home.py
+
+- url: /mailinator/.+
+  script: mailinator.py
+
+- url: /(.+\.(png|js|css|ico))
+  static_files: static/\1
+  upload: static/(.+\.(png|js|css|ico))
+
+
