@@ -182,6 +182,7 @@ button {  width: auto; overflow: visible; }
     margin: 20px;
     padding: 20px;
     border: 1px solid black;
+    background-color: #fff;
 }
 
 #inputbox input[type=text],textarea,label {
@@ -212,11 +213,21 @@ table * td {
 }
 
 td {
-    border: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
 }
 
 .emailbody {
     color: gray;
+}
+
+p {
+    font-size: small;
+    margin-bottom: 20px;
+}
+
+body {
+    background-color: #2F2933;
 }
 
 

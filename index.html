@@ -11,9 +11,9 @@
        Remove this if you use the .htaccess -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title></title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <title>Mailinator Monitor</title>
+  <meta name="description" content="simple way to monitor multiple mailinator accounts when testing if an email was properly sent from your application">
+  <meta name="author" content="jesse.vogt@gmail.com">
 
   <!--  Mobile viewport optimized: j.mp/bplateviewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +42,11 @@
     </header>
     
     <div id="main" role="main">
+
       <div id="inputbox">
+      <p>This is a test application that allows someone to monitor multiple Mailinator accounts. The most likely use case scenario for this app
+        is to check if your app is correctly sending out email. To use, enter the email addresses that you are sending to into the Mailinator Addresses box. Then have your app send to each of those email addresses (but strip off the normal domain and use mailinator instead. So jesse.vogt@gmail.com should become jesse.vogt@mailinator.com). You can set it up to filter on the email address you are sending to so you don't get too many other junk emails showing up. Let me know if you have any questions: jesse@shyknee.net. Check out <a href="http://shyknee.net/">shyknee.net</a> to learn more about me and my other projects.</p>
+
         <label>Mailinator Addresses
           <textarea id="addresses"></textarea>
         </label>
@@ -54,6 +58,7 @@
         <button id="checkonce">Check Once</button>
         <button id="go">Start Continuous Check</button>
         <button id="stop">Stop Continuous Check</button>
+
 
       </div> <!-- end of #inputbox -->
 
