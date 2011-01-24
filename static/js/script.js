@@ -26,12 +26,18 @@ function doIt() {
         
         var finishedCount = 0;
 
-        var url = "/mailinator/" + address;
+        var from = $("#from").val()
+
+        var url = "/mailinator/" + address + (from.length > 0 ? "?from=" + from : "")
+
         jQuery.getJSON(url, function(accountData) {
             var user = accountData.user;
+            var user_elem = "#results #data #" + user;
             var emailsLength = accountData.emails.length;
-            for( var j = 0; j < (emailsLength > 5 ? 5 : emailsLength); ++j ) {
-                $("#results #data #" + user).append(accountData.emails[j].subject + "<br/>");
+            if( emailsLength > 0 ) {
+                for( var j = 0; j < (emailsLength > 5 ? 5 : emailsLength); ++j ) {
+                    $(user_elem).append(accountData.emails[j].subject + "<br/>");
+                }
             }
             finishedCount++;
 

@@ -23,6 +23,12 @@ class MailinatorHandler(BaseHandler):
         super(MailinatorHandler,self).get(args)
         
         username = cgi.escape(args[0].strip())
+        from_filter = None
+        if self.request.query_string:
+            for query in self.request.query_string.split('&'):
+                key,value = query.split('=',1)
+                if key.lower() == 'from':
+                    from_filter = value
         
         mail_rss_url = 'http://mailinator.com/rss.jsp?email=' + username
         logging.debug('fetching %s' % mail_rss_url)
@@ -43,7 +49,9 @@ class MailinatorHandler(BaseHandler):
                 email['date'] = getText(item_node.getElementsByTagName('dc:date')[0])
                 email['link'] = getText(item_node.getElementsByTagName('link')[0])
                 
-                emails.append(email)
+                if from_filter is None or from_filter == email['from']:
+                    emails.append(email)
+
             emails = sorted(emails,key=itemgetter('date'))
             emails.reverse()
         
