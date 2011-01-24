@@ -4,7 +4,7 @@
 
 var emailRefreshTimer = null;
 
-function doIt() {
+function doIt(continuousCheck) {
     // delete the data div and recreate to remove all previous results
     $("#results #data").remove();
     $("#results").append('<div id="data"></div>');
@@ -35,14 +35,21 @@ function doIt() {
             var user_elem = "#results #data #" + user;
             var emailsLength = accountData.emails.length;
             if( emailsLength > 0 ) {
+                var mytable = $(user_elem).append("<table><tbody></tbody></table>")
                 for( var j = 0; j < (emailsLength > 5 ? 5 : emailsLength); ++j ) {
-                    $(user_elem).append(accountData.emails[j].subject + "<br/>");
+                    // $(user_elem).append(accountData.emails[j].subject + "<br/>");
+                    mytable.find('tbody')
+                        .append($('<tr>')
+                                .append($('<td class="fromcol">').text(accountData.emails[j].from))
+                                .append($('<td>').html(accountData.emails[j].subject + ' <span class="emailbody">' + accountData.emails[j].body + '</span>'))
+                                .append($('<td class="datecol">').text(accountData.emails[j].date))
+                               );
                 }
             }
             finishedCount++;
 
-            if( finishedCount == addressesLength ) {
-                emailRefreshTimer = setTimeout("doIt()",5000);
+            if( continuousCheck && finishedCount == addressesLength ) {
+                emailRefreshTimer = setTimeout("doIt(true)",5000);
             }
         });
     }
@@ -53,10 +60,20 @@ var MailinatorMonitorNamespace = {
     common : {
         init : function() {
             $("#go").click( function() {
-                doIt();
+                // check if a timer is already running, if it is running clear it since
+                // starting a new timer would cause a new timer to be created making the
+                // updates show up once for each time the button is clicked
+                if(emailRefreshTimer) {
+                    clearTimeout(emailRefreshTimer);
+                    emailRefreshTimer = null;
+                }
+                doIt(true);
             });
             $("#stop").click( function() {
                 clearTimeout(emailRefreshTimer);
+            });
+            $("#checkonce").click( function() {
+                doIt(false);
             });
         },
         finalize : function() {}

@@ -178,6 +178,46 @@ button {  width: auto; overflow: visible; }
     Author:
  */
 
+#inputbox,#results {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+#inputbox input[type=text],textarea,label {
+    display:block;
+}
+
+#inputbox textarea {
+    width: 100%;
+}
+
+#inputbox input,textarea {
+    margin-bottom: 10px;
+}
+
+table {
+    font-family: arial,serif;;
+    font-size: small;
+    width: 100%;
+    border: 1px solid black;
+}
+
+table * td {
+    padding: 3px;
+}
+
+.fromcol,.datecol {
+    width: 25%;
+}
+
+td {
+    border: 1px solid black;
+}
+
+.emailbody {
+    color: gray;
+}
 
 
 

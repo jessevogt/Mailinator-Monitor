@@ -48,6 +48,7 @@ class MailinatorHandler(BaseHandler):
                 email['subject'] = getText(item_node.getElementsByTagName('title')[0])
                 email['date'] = getText(item_node.getElementsByTagName('dc:date')[0])
                 email['link'] = getText(item_node.getElementsByTagName('link')[0])
+                email['body'] = getText(item_node.getElementsByTagName('description')[0])
                 
                 if from_filter is None or from_filter == email['from']:
                     emails.append(email)

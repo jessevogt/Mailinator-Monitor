@@ -42,18 +42,23 @@
     </header>
     
     <div id="main" role="main">
-      <label>Mailinator Addresses
-        <input type="text" id="addresses" />
-      </label>
-      <button id="go">Start</button>
-      <button id="stop">Stop</button>
-      <br/>
-      <label>
-        Filter by from address
-        <input type="text" id="from" />
-      </label>
+      <div id="inputbox">
+        <label>Mailinator Addresses
+          <textarea id="addresses"></textarea>
+        </label>
+        <label>
+          Filter by from address
+          <input type="email" id="from" />
+        </label>
+
+        <button id="checkonce">Check Once</button>
+        <button id="go">Start Continuous Check</button>
+        <button id="stop">Stop Continuous Check</button>
+
+      </div> <!-- end of #inputbox -->
 
       <div id="results"></div>
+
     </div>
     
     <footer>
