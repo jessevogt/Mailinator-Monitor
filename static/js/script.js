@@ -10,7 +10,6 @@ function doIt(continuousCheck) {
     $("#results").append('<div id="data"></div>');
 
     var rawAddresses = $("#addresses").val().split(/[\s,;\n]+/);
-    console.log(rawAddresses);
     var hitAddresses = []
     var addressesLength = rawAddresses.length;
     for( var i = 0; i < addressesLength; ++i ) {
