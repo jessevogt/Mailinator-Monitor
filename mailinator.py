@@ -9,6 +9,7 @@ from base import BaseHandler
 
 import logging
 import cgi
+from operator import itemgetter
 
 def getText(node):
     rc = []
@@ -43,6 +44,8 @@ class MailinatorHandler(BaseHandler):
                 email['link'] = getText(item_node.getElementsByTagName('link')[0])
                 
                 emails.append(email)
-
+            emails = sorted(emails,key=itemgetter('date'))
+            emails.reverse()
+        
         account_data['emails'] = emails
         self.response.out.write(simplejson.dumps(account_data))
