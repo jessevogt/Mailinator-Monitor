@@ -178,7 +178,7 @@ button {  width: auto; overflow: visible; }
     Author:
  */
 
-#inputbox,#results {
+#inputbox {
     margin: 20px;
     padding: 20px;
     border: 1px solid black;
@@ -197,6 +197,7 @@ button {  width: auto; overflow: visible; }
     margin-bottom: 10px;
 }
 
+/*
 table {
     font-family: arial,serif;;
     font-size: small;
@@ -229,7 +230,55 @@ p {
 body {
     background-color: #2F2933;
 }
+*/
 
+#results {
+    margin: 20px;
+    border: 1px solid black;
+    background-color: #fff;
+}
+
+#results table {
+    width: 100%;
+
+}
+
+#results span {
+    font-weight: normal;
+    font-size: 80%;
+    font-family: arial,sans-serif;
+    color: #444;
+    margin: 3px;
+}
+
+#results td {
+
+}
+
+#results tr {
+    border-bottom: 1px #ddd solid;
+}
+
+#results tr:last-child {
+    border-bottom: 0px black solid;
+}
+
+#results .from {
+    white-space: nowrap;
+}
+
+#results .subject {
+    white-space: wrap;
+}
+
+#results .body {
+    white-space: wrap;
+    color: #777;
+}
+
+#results .date {
+    white-space: nowrap;
+}
 
 
 
@@ -279,7 +328,7 @@ body {
 
 /*
  * media queries for responsive design
- * these follow after primary styles so they will successfully override.
+ * These Follow After primary styles so they will successfully override.
  */
 
 @media all and (orientation:portrait) {

@@ -5,9 +5,7 @@
 var emailRefreshTimer = null;
 
 function doIt(continuousCheck) {
-    // delete the data div and recreate to remove all previous results
-    $("#results #data").remove();
-    $("#results").append('<div id="data"></div>');
+
 
     var rawAddresses = $("#addresses").val().split(/[\s,;\n]+/);
     var hitAddresses = []
@@ -34,9 +32,9 @@ function doIt(continuousCheck) {
         
         var finishedCount = 0;
 
-        var from = $("#from").val()
+        var from = $("#from").val();
 
-        var url = "/mailinator/" + address + (from.length > 0 ? "?from=" + from : "")
+        var url = "/mailinator/" + address + (from.length > 0 ? "?from=" + from : "");
 
         jQuery.getJSON(url, function(accountData) {
             var user = accountData.user;
@@ -47,12 +45,45 @@ function doIt(continuousCheck) {
                 for( var j = 0; j < (emailsLength > 5 ? 5 : emailsLength); ++j ) {
                     // $(user_elem).append(accountData.emails[j].subject + "<br/>");
                     em = accountData.emails[j];
+                    emailDate = new Date();
+                    emailDate.setTime(Date.parse(em.date));
+                    today = new Date();
+
+                    var dateText = '';
+                    if( emailDate.getFullYear() == today.getFullYear() ) {
+                        if( emailDate.getMonth() == today.getMonth() &&
+                            emailDate.getDate() == today.getDate() ) {
+                            dateText = emailDate.getHours() + ':';
+                            if( emailDate.getMinutes() < 10 ) {
+                                dateText += '0' + emailDate.getMinutes();
+                            } else {
+                                dateText += emailDate.getMinutes();
+                            }
+                        } else {
+                            dateText = [ 'Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec' ][emailDate.getMonth()] + ' ' + emailDate.getDate();
+                        }
+                    } else {
+                        dateText = emailDate.getFullYear() + '/' +
+                                   (emailDate.getMonth() + 1) + '/' + 
+                                   emailDate.getDate();
+                    }
+
+                    emailHTML = '<tr onclick="javascript:window.open(\'' + em.link + '\');">' +
+                                  '<td><span class="from">' + em.from + '</span></td>' +
+                                  '<td><span class="subject">' + em.subject + '</span>' +
+                                      '<span class="body">' + em.body + '</span></td>' +  
+                                  '<td><span class="date">' + dateText + '</span></td>' +
+                                '</tr>';
+                                
+                    if( j == 0 ) {
+                        // delete the data div and recreate to remove all previous results
+                        //$("#results #data").remove();
+                        //$("#results").append('<div id="data"></div>');
+                    }
+
+
                     mytable.find('tbody')
-                        .append($('<tr>')
-                                .append($('<td class="fromcol">').text(em.from))
-                                .append($('<td>').html(em.subject + ' <span class="emailbody">' + em.body + '</span>'))
-                                .append($('<td class="datecol">').text(em.date))
-                               );
+                      .html(emailHTML);
                 }
             }
             finishedCount++;
