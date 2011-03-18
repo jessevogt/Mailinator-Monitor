@@ -4,8 +4,49 @@
 
 var emailRefreshTimer = null;
 
-function doIt(continuousCheck) {
+function collectAddresses(rawData) {
+    // split the addresses by whitespace, newlines, commas, and semicolons
+    var rawAddresses = rawData.split(/[\s,;\n]+/);
+    var addressCount = rawAddresses.length;
+    var addresses = [];
+    for( var i = 0; i < addressCount; ++i ) {
+        var address = null;
+        if( rawAddresses[i].indexOf("@") < 0 ) {
+            // address does not contain @server.com, just add as is
+            address = rawAddresses[i];
+        } else {
+            // strip of the @ sign and everything after it
+            address = rawAddresses[i].substr(0,rawAddresses[i].indexOf("@"));
+        }
 
+        if( address && !(address in addresses) ) {
+            addresses[address] = 1;
+        }
+    }
+    
+    return addresses;
+}
+
+function checkAddresses() {
+    $("#results *").remove();
+
+    var addresses = collectAddresses($("#addresses").val());
+    var resultsElement = $("<div>");
+    for( var address in addresses ) {
+        if( !addresses.hasOwnProperty(address) ) {
+            continue;
+        }
+        var resultElement = $('<div id="' + address + '">');
+        resultElement.append(address);
+        resultsElement.append(resultElement);
+    }
+
+
+    $("#results").append(resultsElement);
+}
+
+function doIt(continuousCheck) {
+    
 
     var rawAddresses = $("#addresses").val().split(/[\s,;\n]+/);
     var hitAddresses = []
@@ -29,7 +70,8 @@ function doIt(continuousCheck) {
         $("#results #data").append('<div id="' + address + '"></div>');
         var userElem = "#results #data #" + address;
         $(userElem).append("<h1>" + address + "</h1>");
-        
+        break;
+
         var finishedCount = 0;
 
         var from = $("#from").val();
@@ -77,13 +119,13 @@ function doIt(continuousCheck) {
                                 
                     if( j == 0 ) {
                         // delete the data div and recreate to remove all previous results
-                        //$("#results #data").remove();
-                        //$("#results").append('<div id="data"></div>');
+                        $("#results #data").remove();
+                        $("#results").append('<div id="data"></div>');
                     }
 
 
                     mytable.find('tbody')
-                      .html(emailHTML);
+                      .append(emailHTML);
                 }
             }
             finishedCount++;
@@ -103,17 +145,19 @@ var MailinatorMonitorNamespace = {
                 // check if a timer is already running, if it is running clear it since
                 // starting a new timer would cause a new timer to be created making the
                 // updates show up once for each time the button is clicked
+                /*
                 if(emailRefreshTimer) {
                     clearTimeout(emailRefreshTimer);
                     emailRefreshTimer = null;
                 }
-                doIt(true);
+                */
+                checkAddresses();
             });
             $("#stop").click( function() {
                 clearTimeout(emailRefreshTimer);
             });
             $("#checkonce").click( function() {
-                doIt(false);
+                checkAddresses();
             });
         },
         finalize : function() {}
