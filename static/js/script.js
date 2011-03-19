@@ -39,10 +39,19 @@ function checkAddresses() {
         var resultElement = $('<div id="' + address + '">');
         resultElement.append(address);
         resultsElement.append(resultElement);
+
+        updateWithEmails(address,$("#from").val());
     }
 
 
     $("#results").append(resultsElement);
+}
+
+function updateWithEmails(address,filterFrom) {
+    var url = "/mailinator/" + address + (filterFrom.length > 0 ? "?from=" + filterFrom : "");
+    jQuery.getJSON(url, function(accountData) {
+        $("#" + accountData.user).append(" Got it!");
+    });
 }
 
 function doIt(continuousCheck) {
