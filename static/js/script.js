@@ -37,7 +37,7 @@ function checkAddresses() {
             continue;
         }
         var resultElement = $('<div id="' + address + '">');
-        resultElement.append(address);
+        resultElement.append('<h1>' + address + '</h1>');
         resultsElement.append(resultElement);
 
         updateWithEmails(address,$("#from").val());
@@ -47,10 +47,62 @@ function checkAddresses() {
     $("#results").append(resultsElement);
 }
 
+function formatDate(tzDate) {
+    emailDate = new Date();
+    emailDate.setTime(Date.parse(tzDate));
+    today = new Date();
+
+    var dateText = '';
+    if( emailDate.getFullYear() == today.getFullYear() ) {
+        if( emailDate.getMonth() == today.getMonth() &&
+            emailDate.getDate() == today.getDate() ) {
+            dateText = emailDate.getHours() + ':';
+            if( emailDate.getMinutes() < 10 ) {
+                dateText += '0' + emailDate.getMinutes();
+            } else {
+                dateText += emailDate.getMinutes();
+            }
+        } else {
+            dateText = [ 'Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec' ][emailDate.getMonth()] + ' ' + emailDate.getDate();
+        }
+    } else {
+        dateText = emailDate.getFullYear() + '/' +
+            (emailDate.getMonth() + 1) + '/' + 
+            emailDate.getDate();
+    }
+    return dateText;
+}
+
 function updateWithEmails(address,filterFrom) {
-    var url = "/mailinator/" + address + (filterFrom.length > 0 ? "?from=" + filterFrom : "");
+    var filter = filterFrom.length > 0 ? "?from=" + filterFrom : "";
+    var url = "/mailinator/" + address + filter
     jQuery.getJSON(url, function(accountData) {
-        $("#" + accountData.user).append(" Got it!");
+
+        var emailElem = $("#" + accountData.user);
+
+        var emailCount = accountData.emails.length;
+        if( emailCount == 0 ) {
+            return;
+        }
+
+        html = "<table><tbody>";
+        for( var i = 0; i < Math.min(5,emailCount); ++i ) {
+            var email = accountData.emails[i];
+            html += "<tr>" +
+                "<td>" +
+                    email.from +
+                "</td>" +
+                "<td>" + 
+                    email.subject + email.body +
+                "</td>" +
+                "<td>" +
+                    formatDate(email.date) +
+                "</td>" + 
+                "</tr>";
+                      
+        }
+        html += "</tbody></table>";
+        emailElem.append(html);
     });
 }
 
